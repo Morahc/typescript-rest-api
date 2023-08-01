@@ -38,13 +38,13 @@ export const ForgetPassword = () => {
 };
 
 export const RefreshToken = async (refreshToken: string) => {
-  const decoded = verifyToken(refreshToken, 'refreshToken')
+  const decoded = verifyToken(refreshToken, 'refreshToken');
 
-  if(!decoded) throw new HttpException(403, 'Unauthorized Access');
+  if (!decoded) throw new HttpException(403, 'Unauthorized Access');
 
-  const user = await UserModel.findById(decoded.sub)
+  const user = await UserModel.findById(decoded.sub);
 
-  if(!user) throw new HttpException(403, 'Unauthorized User')
+  if (!user) throw new HttpException(403, 'Unauthorized User');
 
-  return user._id
-}
+  return user._id;
+};

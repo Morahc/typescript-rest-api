@@ -6,7 +6,7 @@ export const userProfile = async (req: Request, res: Response, next: NextFunctio
   try {
     const profile = await Profile(req.user);
 
-    return res.status(201).json({ profile });
+    return res.status(201).json(profile);
   } catch (error) {
     return next(error);
   }
@@ -20,7 +20,7 @@ export const resetPassword = async (
   try {
     await ResetPassword(req.user, req.body.password);
 
-    return res.status(201);
+    return res.status(201).send('Password reset sucessful');
   } catch (error) {
     return next(error);
   }
@@ -28,10 +28,9 @@ export const resetPassword = async (
 
 export const verifyAccount = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log('first');
     await VerifyAccount(req.user);
 
-    return res.status(201);
+    return res.status(201).send('User verified');
   } catch (error) {
     return next(error);
   }
@@ -41,7 +40,7 @@ export const deleteAccount = async (req: Request, res: Response, next: NextFunct
   try {
     await DeleteAccount(req.user);
 
-    return res.status(201);
+    return res.status(201).send('User deleted');
   } catch (error) {
     return next(error);
   }

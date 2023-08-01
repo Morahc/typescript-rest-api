@@ -1,30 +1,25 @@
 import { Request, Response, NextFunction } from 'express';
-import HttpException from '../utils/HttpException.utils';
 import { verifyToken } from '../utils/jwt.utils';
 import UserModel from '../models/user.model';
 
 export const deserializeUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let access_token;
+    let accessToken;
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-      access_token = req.headers.authorization.split(' ')[1];
+      accessToken = req.headers.authorization.split(' ')[1];
     } else if (req.cookies['x-access-token']) {
-      access_token = req.cookies['x-access-token'];
+      accessToken = req.cookies['x-access-token'];
     }
 
-    if (!access_token) {
-      return next(new HttpException(401, 'You are not logged in'));
-    }
+    if (!accessToken) return next();
 
-    const decoded = verifyToken(access_token, 'accessToken');
+    const decoded = verifyToken(accessToken, 'accessToken');
 
-    if (!decoded) return next(new HttpException(401, "Invalid token or user doesn't exist"));
+    if (!decoded) return next();
 
     const user = await UserModel.findById(decoded.sub);
 
-    if (!user) {
-      return next(new HttpException(401, 'User with that token no longer exist'));
-    }
+    if (!user) return next();
 
     req.user = user._id;
 

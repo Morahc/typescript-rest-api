@@ -4,6 +4,12 @@ import HttpException from '../utils/HttpException.utils';
 export interface HttpError extends Error {
   status?: number;
 }
+interface errorResponse {
+  name: string;
+  message: string;
+  stack?: string;
+  status: number;
+}
 
 export const errorMiddleware = (
   err: HttpError,
@@ -15,10 +21,13 @@ export const errorMiddleware = (
   console.log(err);
   const status = err.status || 500;
   const message = err.message || 'Something went wrong!';
-  res.status(status).json({
-    message: message,
-    stack: process.env.NODE_ENV === 'prod' ? null : err.stack,
-  });
+  const response: errorResponse = {
+    name: err.name,
+    message,
+    status,
+  };
+  if (process.env.NODE_ENV === 'development') response.stack = err.stack;
+  res.status(status).json(response);
 };
 
 export const notFound = (req: Request, res: Response, next: NextFunction) => {

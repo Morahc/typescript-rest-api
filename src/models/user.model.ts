@@ -32,7 +32,7 @@ const userSchema = new Schema<User, UserModel, UserMethods>(
     password: { type: String, required: true },
     fullname: { type: String, required: true },
     verified: { type: Boolean, default: false },
-    verificationToken: { type: String, required: true },
+    verificationToken: { type: String },
     isDeleted: { type: Boolean, default: false },
     DeletedAt: { type: Date },
   },
@@ -56,11 +56,13 @@ userSchema.methods.matchPassword = async function (password: string): Promise<bo
 
 userSchema.methods.verifyAccount = async function () {
   this.verified = true;
+  this.save();
 };
 
 userSchema.methods.deleteAccount = async function () {
   this.isDeleted = true;
   this.DeletedAt = new Date();
+  this.save();
 };
 
 userSchema.methods.profile = function () {

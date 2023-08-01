@@ -18,9 +18,9 @@ export const Profile = async (id: Types.ObjectId) => {
   return user.profile();
 };
 
-export const UpdateInfo = async (id: Types.ObjectId) => {
-  return;
-};
+// export const UpdateInfo = async (id: Types.ObjectId) => {
+//   return;
+// };
 
 export const ResetPassword = async (id: Types.ObjectId, password: string) => {
   const user = await FindUserById(id);

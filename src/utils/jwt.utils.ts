@@ -12,8 +12,12 @@ const secrets = {
 };
 
 export const generateTokens = (payload: payload) => {
-  const accessToken = jwt.sign(payload, secrets['accessToken'], { expiresIn: '15m' });
-  const refreshToken = jwt.sign(payload, secrets['refreshToken'], { expiresIn: '3d' });
+  const accessToken = jwt.sign(payload, secrets['accessToken'], {
+    expiresIn: '15m',
+  });
+  const refreshToken = jwt.sign(payload, secrets['refreshToken'], {
+    expiresIn: '3d',
+  });
 
   return [accessToken, refreshToken];
 };

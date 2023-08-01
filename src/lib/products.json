@@ -1,0 +1,14 @@
+[
+  {
+    name: 'Green Sunset Suit',
+    description: 'A Green suit',
+    brand: 'La Coste',
+    price: 1200,
+    quantity: 8,
+    category: 'Suits',
+    attributes: {
+      color: ['black'],
+      size: ['L', 'XL', 'XS'],
+    },
+  },
+];

@@ -1,7 +1,7 @@
 import MongoStore from 'connect-mongo';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const { COOKIE_SECRET, MONGO_URI }:Record<string, any> = process.env
+const { COOKIE_SECRET, MONGO_URI }: Record<string, any> = process.env;
 
 const options = {
   secret: COOKIE_SECRET,

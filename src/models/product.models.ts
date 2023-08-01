@@ -1,16 +1,27 @@
 import { Schema, model, Model } from 'mongoose';
 
+// const reviewSchema = new Schema(
+//   {
+//     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+//     name: { type: String, required: true },
+//     rating: { type: Number, default: 0 },
+//     comment: { type: String, required: true },
+//   },
+//   {
+//     timestamps: true,
+//   }
+// );
+
 export interface Product {
   name: string;
   slug: string;
   description: string;
+  brand: string;
   price: number;
   quantity: number;
   categories: string;
+  attributes: Record<string, string[]>;
   images: string;
-  sold: number;
-  rating: number;
-  averageRating: number;
 }
 
 type ProductModel = Model<Product>;
@@ -18,25 +29,19 @@ type ProductModel = Model<Product>;
 const productSchema = new Schema<Product, ProductModel>(
   {
     name: { type: String, required: true },
-    slug: { type: String },
+    slug: { type: String, unique: true },
     description: { type: String, required: true },
+    brand: { type: String, required: true },
     price: { type: Number, required: true },
     quantity: { type: Number, required: true },
     categories: { type: String },
+    attributes: { type: Map, of: [String] },
     images: [{ type: String, required: true }],
-    sold: { type: Number, default: 0 },
-    rating: { type: Number, default: 0 },
-    averageRating: { type: Number, default: 0 },
   },
   {
     timestamps: true,
   }
 );
-
-// productSchema.pre('save', function (next) {
-//   this.slug = slugify(this.name, { lower: true });
-//   next()
-// });
 
 const ProductModel = model<Product, ProductModel>('Product', productSchema);
 

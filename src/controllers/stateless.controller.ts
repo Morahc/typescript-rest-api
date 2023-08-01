@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, CookieOptions } from 'express';
 import { VerifyUser, CreateUser, RefreshToken } from '../services/auth.services';
-import {  generateTokens } from '../utils/jwt.utils';
+import { generateTokens } from '../utils/jwt.utils';
 import { CreateUserInput, LoginUserInput } from '../schemas/auth.schema';
 
 const cookieOptions: CookieOptions = {
