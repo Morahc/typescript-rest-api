@@ -1,12 +1,12 @@
 import { Types } from 'mongoose';
 import UserModel from '../models/user.model';
-import HttpException from '../utils/HttpException.utils';
+import { NotFoundException } from '../exceptions';
 
 export const FindUserById = async (id: Types.ObjectId) => {
   const user = await UserModel.findById(id);
 
   if (!user) {
-    throw new HttpException(401, 'User not found');
+    throw new NotFoundException('User not found');
   }
 
   return user;

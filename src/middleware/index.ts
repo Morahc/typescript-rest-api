@@ -1,37 +1,23 @@
 import { Request, Response, NextFunction } from 'express';
-import HttpException from '../utils/HttpException.utils';
+import { HttpException, NotFoundException } from '../exceptions';
 
-export interface HttpError extends Error {
-  status?: number;
-}
-interface errorResponse {
-  name: string;
-  message: string;
-  stack?: string;
-  status: number;
-}
-
-export const errorMiddleware = (
-  err: HttpError,
-  req: Request,
-  res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  next: NextFunction
-) => {
-  console.log(err);
-  const status = err.status || 500;
-  const message = err.message || 'Something went wrong!';
-  const response: errorResponse = {
-    name: err.name,
-    message,
-    status,
-  };
-  if (process.env.NODE_ENV === 'development') response.stack = err.stack;
-  res.status(status).json(response);
+export const errorMiddleware = (err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof HttpException) {
+    res.status(err.statusCode).json({
+      name: err.name,
+      message: err.message,
+      status: err.statusCode,
+    });
+  } else {
+    res.status(500).json({
+      name: 'Internal Server Error',
+      message: 'Something went wrong',
+    });
+  }
 };
 
 export const notFound = (req: Request, res: Response, next: NextFunction) => {
-  next(new HttpException(404, `Route ${req.originalUrl} not found`));
+  next(new NotFoundException());
 };
 
 export * from './auth.middleware';

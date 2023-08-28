@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { VerifyUser, CreateUser } from '../services/auth.services';
+import { CreateUser } from '../services/auth.services';
 import { CreateUserInput } from '../schemas/auth.schema';
 
 export const register = async (
@@ -16,23 +16,14 @@ export const register = async (
   }
 };
 
-export const login = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { email, password } = req.body;
-
-    const user = await VerifyUser(email, password);
-
-    req.session.user = user._id;
-
-    res.json({ user });
-  } catch (error) {
-    next(error);
-  }
+export const login = (req: Request, res: Response) => {
+  res.send('Login Ok');
 };
 
-export const logout = async (req: Request, res: Response) => {
-  req.session.destroy((err) => {
-    if (err) res.status(500).json({ message: err || 'Something went wrong' });
+export const logout = (req: Request, res: Response, next: NextFunction) => {
+  req.logOut((err) => {
+    if (err) return next(err);
+
+    res.status(200).send('Logout');
   });
-  res.status(200).send('session deleted');
 };

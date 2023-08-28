@@ -2,8 +2,10 @@ import express from 'express';
 import router from './routes';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
+
 import database from './config/database';
 import options from './config/session';
+import passport from './config/passport';
 import morgan from 'morgan';
 import 'dotenv/config';
 import { deserializeUser, errorMiddleware, notFound } from './middleware';
@@ -11,6 +13,9 @@ import { deserializeUser, errorMiddleware, notFound } from './middleware';
 const app = express();
 
 app.use(session(options));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.json());
 app.use(cookieParser());
